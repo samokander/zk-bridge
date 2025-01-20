@@ -1,4 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-tracer";
 import { HardhatUserConfig } from "hardhat/config";
 
 const config: HardhatUserConfig = {
