@@ -15,13 +15,13 @@ contract Bridge {
     uint8 constant TREE_DEPTH = 20;
 
     IERC20 public immutable token;
-    uint public immutable portion;
+    uint256 public immutable portion;
 
     MerkleTree.Bytes32PushTree private tree;
 
     mapping(bytes32 => bool) public commitments;
 
-    constructor(address _token, uint _portion) {
+    constructor(address _token, uint256 _portion) {
         token = IERC20(_token);
         portion = _portion;
 
@@ -37,8 +37,6 @@ contract Bridge {
         token.safeTransferFrom(msg.sender, address(this), portion);
 
         tree.push(_commitment, PoseidonT3.poseidon);
-
-        // todo: add to merkle tree
     }
 
     function withdraw() public {
