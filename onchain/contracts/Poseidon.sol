@@ -15,9 +15,13 @@ library Poseidon {
     uint constant M12 =
         0x176cc029695ad02582a70eff08a6fd99d057e12e58e7d7b6b16cdfabc8ee2911;
 
+    function poseidon(bytes32 a, bytes32 b) external pure returns (bytes32) {
+        return _poseidon(a, b);
+    }
+
     // See here for a simplified implementation: https://github.com/vimwitch/poseidon-solidity/blob/e57becdabb65d99fdc586fe1e1e09e7108202d53/contracts/Poseidon.sol#L40
     // Inspired by: https://github.com/iden3/circomlibjs/blob/v0.0.8/src/poseidon_slow.js
-    function poseidon(bytes32 a, bytes32 b) internal pure returns (bytes32) {
+    function _poseidon(bytes32 a, bytes32 b) internal pure returns (bytes32) {
         assembly {
             mstore(0x80, a)
             mstore(0xa0, b)

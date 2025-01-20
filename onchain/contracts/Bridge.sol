@@ -25,7 +25,7 @@ contract Bridge {
         token = IERC20(_token);
         portion = _portion;
 
-        tree.setup(TREE_DEPTH, ZERO_VALUE, Poseidon.poseidon);
+        tree.setup(TREE_DEPTH, ZERO_VALUE, Poseidon._poseidon);
     }
 
     function deposit(bytes32 _commitment) public {
@@ -36,7 +36,7 @@ contract Bridge {
 
         token.safeTransferFrom(msg.sender, address(this), portion);
 
-        tree.push(_commitment, Poseidon.poseidon);
+        tree.push(_commitment, Poseidon._poseidon);
 
         commitments[_commitment] = true;
     }
