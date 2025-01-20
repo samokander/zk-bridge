@@ -37,6 +37,8 @@ contract Bridge {
         token.safeTransferFrom(msg.sender, address(this), portion);
 
         tree.push(_commitment, PoseidonT3.poseidon);
+
+        commitments[_commitment] = true;
     }
 
     function withdraw() public {
