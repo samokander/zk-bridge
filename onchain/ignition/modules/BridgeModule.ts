@@ -7,7 +7,7 @@ const BridgeModule = buildModule("Bridge", (m) => {
 
 	const bridge = m.contract("Bridge", [token, portion]);
 
-	return { bridge };
+	return { bridge, token };
 });
 
 export default BridgeModule;
