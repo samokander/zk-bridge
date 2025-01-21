@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.28;
+pragma solidity ^0.8.22;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/structs/MerkleTree.sol";
-import "./Poseidon.sol";
+import {PoseidonT3} from "poseidon-solidity/PoseidonT3.sol";
 
 contract Bridge {
     using SafeERC20 for IERC20;
@@ -22,26 +22,31 @@ contract Bridge {
     mapping(bytes32 => bool) public commitments;
 
     constructor(address _token, uint256 _portion) {
+        tree.setup(TREE_DEPTH, ZERO_VALUE, poseidon);
+
         token = IERC20(_token);
         portion = _portion;
-
-        tree.setup(TREE_DEPTH, ZERO_VALUE, Poseidon._poseidon);
     }
 
     function deposit(bytes32 _commitment) public {
-        require(
-            !commitments[_commitment],
-            Bridge__ExistentCommitment(_commitment)
-        );
+        if (commitments[_commitment])
+            revert Bridge__ExistentCommitment(_commitment);
 
         token.safeTransferFrom(msg.sender, address(this), portion);
 
-        tree.push(_commitment, Poseidon._poseidon);
+        tree.push(_commitment, poseidon);
 
         commitments[_commitment] = true;
     }
 
     function withdraw() public {
         // todo: check validity proof
+    }
+
+    function poseidon(
+        bytes32 input0,
+        bytes32 input1
+    ) internal pure returns (bytes32) {
+        return bytes32(PoseidonT3.hash([uint256(input0), uint256(input1)]));
     }
 }
