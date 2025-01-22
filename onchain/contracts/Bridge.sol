@@ -11,6 +11,8 @@ contract Bridge {
 
     error Bridge__ExistentCommitment(bytes32 commitment);
 
+    event Bridge__NewDeposit(bytes32, uint256, bytes32);
+
     bytes32 constant ZERO_VALUE = keccak256("bridge");
     uint8 constant TREE_DEPTH = 20;
 
@@ -34,9 +36,11 @@ contract Bridge {
 
         token.safeTransferFrom(msg.sender, address(this), portion);
 
-        tree.push(_commitment, poseidon);
+        (uint256 index, bytes32 newRoot) = tree.push(_commitment, poseidon);
 
         commitments[_commitment] = true;
+
+        emit Bridge__NewDeposit(_commitment, index, newRoot);
     }
 
     function withdraw() public {
