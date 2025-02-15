@@ -1,18 +1,6 @@
 pragma circom 2.0.0;
 
-include "../node_modules/circomlib/circuits/poseidon.circom";
-
-// Computes Poseidon([left, right])
-template HashLeftRight() {
-    signal input left;
-    signal input right;
-    signal output hash;
-
-    component hasher = Poseidon(2);
-    hasher.inputs[0] <== left;
-    hasher.inputs[1] <== right;
-    hash <== hasher.out;
-}
+include "./HashLeftRight.circom";
 
 // if s == 0 returns [in[0], in[1]]
 // if s == 1 returns [in[1], in[0]]
@@ -21,7 +9,7 @@ template DualMux() {
     signal input s;
     signal output out[2];
 
-    s * (1 - s) === 0
+    s * (1 - s) === 0;
     out[0] <== (in[1] - in[0])*s + in[0];
     out[1] <== (in[0] - in[1])*s + in[1];
 }

@@ -24,7 +24,7 @@ describe("Poseidon Circuit test", function () {
 
 		const res2 = poseidon([0, 0]);
 
-		assert(F.eq(F.e("7853200120776062878684798364095072458815029376092732009249414926327459813530"), F.e(res2)));
+		assert(F.eq(F.e("14744269619966411208579211824598458697587494354926760081771325075741142829156"), F.e(res2)));
 		await circuit.assertOut(w, { hash: F.toObject(res2) });
 		await circuit.checkConstraints(w);
 	});
